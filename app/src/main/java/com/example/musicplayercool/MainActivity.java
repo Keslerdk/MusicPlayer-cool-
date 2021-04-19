@@ -16,6 +16,7 @@ import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.util.Log;
 
@@ -29,6 +30,7 @@ import com.karumi.dexter.listener.single.PermissionListener;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -89,9 +91,6 @@ public class MainActivity extends AppCompatActivity {
                 null);
 
 
-
-        ArrayList<String> songsNames= new ArrayList<>();
-
         while (cursor.moveToNext()) {
             songs.add(cursor.getString(0) + "||" + cursor.getString(1) + "||"
                     + cursor.getString(2) + "||" + cursor.getString(3) + "||"
@@ -99,24 +98,13 @@ public class MainActivity extends AppCompatActivity {
 
             if (cursor.getString(4).endsWith(".mp3") || cursor.getString(4).endsWith(".wav")) {
                 items.add(new SongsRvModel(getAlbumCover(cursor), cursor.getString(2),
-                        cursor.getString(1)));
-                songsNames.add(cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA)));
-                Log.d(TAG, "getAllMusic: "+cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA)));
+                        cursor.getString(1),
+                        cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA))));
             }
 
         }
 
         Log.d(TAG, "getAllMusic: " + songs);
-
-        MediaPlayer player = new MediaPlayer();
-        try {
-            player.setAudioStreamType(AudioManager.STREAM_MUSIC);
-            player.setDataSource(songsNames.get(0));
-            player.prepare();
-            player.start();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
         return items;
     }
@@ -132,7 +120,24 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(int position) {
 
                 Intent intent = new Intent(MainActivity.this, PlaySongActivity.class);
+//                intent.putExtra("items", (Parcelable) items.get(position));
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("items", items.get(position));
+                Log.d(TAG, "onItemClick: "+items.get(position));
+                Log.d(TAG, "onItemClick: "+bundle);
+                intent.putExtras(bundle);
+                intent.putExtra("position", position);
                 startActivity(intent);
+
+                MediaPlayer player = new MediaPlayer();
+                try {
+                    player.setAudioStreamType(AudioManager.STREAM_MUSIC);
+                    player.setDataSource(items.get(position).getData());
+                    player.prepare();
+                    player.start();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
 
             }
