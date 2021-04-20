@@ -4,30 +4,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/layout_bg"
     tools:context=".PlaySongActivity">
 
     <ImageView
         android:id="@+id/coverAlbum"
-        android:layout_width="322dp"
-        android:layout_height="324dp"
-        android:background="@color/purple_200"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/cover_album_bg"
+        app:layout_constraintWidth_percent=".75"
+        app:layout_constraintHeight_percent=".4"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias=".5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias=".3" />
+        app:layout_constraintVertical_bias=".15" />
 
     <TextView
         android:id="@+id/songName"
-        android:layout_width="324dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"
+        app:layout_constraintWidth_percent=".75"
         android:fontFamily="@font/montserrat_bold"
         android:gravity="center"
         android:maxLines="1"
         android:text="Het Boy (feat. Burna Boy)"
         android:textSize="22sp"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/coverAlbum"
         app:layout_constraintHorizontal_bias="0"
@@ -35,16 +40,82 @@
         app:layout_constraintTop_toBottomOf="@+id/coverAlbum"
         app:layout_constraintVertical_bias="0" />
 
-    <ImageButton
-        android:id="@+id/playBtn"
-        android:layout_width="55dp"
-        android:layout_height="55dp"
-        android:background="@drawable/ic_play"
+    <SeekBar
+        android:id="@+id/seekBar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:progressTint="#E9DAFA"
         app:layout_constraintVertical_bias="0"
-        android:layout_marginTop="10dp"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/songName"
         app:layout_constraintStart_toStartOf="@+id/songName"
-        app:layout_constraintTop_toBottomOf="@+id/songName"/>
+        app:layout_constraintTop_toBottomOf="@+id/songName"
+        app:layout_constraintWidth_percent=".75" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0:00"
+        android:textColor="#E9DAFA"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="@+id/seekBar"
+        app:layout_constraintTop_toBottomOf="@+id/seekBar"
+        app:layout_constraintVertical_bias="0" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="3:47"
+        android:textColor="#E9DAFA"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/seekBar"
+        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/seekBar"
+        app:layout_constraintVertical_bias="0" />
+
+    <ImageView
+        android:id="@+id/playBtn"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:src="@drawable/ic_pause"
+        android:layout_marginTop="15sp"
+        app:tint="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/seekBar"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/seekBar"
+        app:layout_constraintTop_toBottomOf="@+id/seekBar"
+        app:layout_constraintVertical_bias="0" />
+
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginRight="13dp"
+        android:src="@drawable/ic_previous"
+        app:tint="#E9DAFA"
+        app:layout_constraintBottom_toBottomOf="@+id/playBtn"
+        app:layout_constraintEnd_toStartOf="@+id/playBtn"
+        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/playBtn"
+        app:layout_constraintVertical_bias=".5" />
+
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/ic_next"
+        app:layout_constraintVertical_bias=".5"
+        app:layout_constraintHorizontal_bias="0"
+        android:layout_marginLeft="13dp"
+        app:tint="#E9DAFA"
+        app:layout_constraintBottom_toBottomOf="@+id/playBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/playBtn"
+        app:layout_constraintTop_toTopOf="@+id/playBtn" />
 </androidx.constraintlayout.widget.ConstraintLayout>

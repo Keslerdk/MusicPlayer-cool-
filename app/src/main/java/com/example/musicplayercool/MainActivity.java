@@ -120,10 +120,12 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(int position) {
 
                 Intent intent = new Intent(MainActivity.this, PlaySongActivity.class);
+//                Intent intent = new Intent(MainActivity.this, MediaPlayerService.class);
                 Bundle bundle = new Bundle();
                 bundle.putParcelable("items", items.get(position));
                 intent.putExtras(bundle);
                 startActivity(intent);
+//                startService(intent);
 
 //                MediaPlayer player = new MediaPlayer();
 //                try {
