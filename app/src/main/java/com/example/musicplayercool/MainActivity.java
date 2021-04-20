@@ -120,24 +120,20 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(int position) {
 
                 Intent intent = new Intent(MainActivity.this, PlaySongActivity.class);
-//                intent.putExtra("items", (Parcelable) items.get(position));
                 Bundle bundle = new Bundle();
                 bundle.putParcelable("items", items.get(position));
-                Log.d(TAG, "onItemClick: "+items.get(position));
-                Log.d(TAG, "onItemClick: "+bundle);
                 intent.putExtras(bundle);
-                intent.putExtra("position", position);
                 startActivity(intent);
 
-                MediaPlayer player = new MediaPlayer();
-                try {
-                    player.setAudioStreamType(AudioManager.STREAM_MUSIC);
-                    player.setDataSource(items.get(position).getData());
-                    player.prepare();
-                    player.start();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+//                MediaPlayer player = new MediaPlayer();
+//                try {
+//                    player.setAudioStreamType(AudioManager.STREAM_MUSIC);
+//                    player.setDataSource(items.get(position).getData());
+//                    player.prepare();
+//                    player.start();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
 
 
             }
