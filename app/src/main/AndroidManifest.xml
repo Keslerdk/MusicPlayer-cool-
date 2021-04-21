@@ -11,10 +11,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MusicPlayerCool">
+        <activity android:name=".BottomSheetActivity"></activity>
 
         <service android:name=".MediaPlayerService" />
 
-        <activity android:name=".PlaySongActivity"></activity>
+        <activity android:name=".PlaySongActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

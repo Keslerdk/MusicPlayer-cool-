@@ -1,26 +1,24 @@
 package com.example.musicplayercool;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
-import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.AudioManager;
 import android.media.MediaMetadataRetriever;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.util.Log;
 
 import com.example.musicplayercool.model.SongsRvModel;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionDeniedResponse;
@@ -28,9 +26,6 @@ import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,12 +38,19 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<SongsRvModel> items = new ArrayList<>();
     List<String> songs = new ArrayList<String>();
 
+    ConstraintLayout cBottomSheet;
+    BottomSheetBehavior bottomSheetBehavior;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         songsRv = findViewById(R.id.songs_rv);
+
+        cBottomSheet = findViewById(R.id.bottom_sheet);
+        bottomSheetBehavior = BottomSheetBehavior.from(cBottomSheet);
+
 
         Dexter.withContext(this).withPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
                 .withListener(new PermissionListener() {
@@ -119,12 +121,18 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(int position) {
 
-                Intent intent = new Intent(MainActivity.this, PlaySongActivity.class);
-//                Intent intent = new Intent(MainActivity.this, MediaPlayerService.class);
-                Bundle bundle = new Bundle();
-                bundle.putParcelable("items", items.get(position));
-                intent.putExtras(bundle);
-                startActivity(intent);
+//                Intent intent = new Intent(MainActivity.this, PlaySongActivity.class);
+////                Intent intent = new Intent(MainActivity.this, MediaPlayerService.class);
+//                Bundle bundle = new Bundle();
+//                bundle.putParcelable("items", items.get(position));
+//                intent.putExtras(bundle);
+//                startActivity(intent);
+
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                
+
+
+
 //                startService(intent);
 
 //                MediaPlayer player = new MediaPlayer();
