@@ -6,16 +6,23 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
+import android.content.ComponentName;
 import android.content.ContentUris;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.musicplayercool.model.SongsRvModel;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -32,6 +39,8 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
+    ImageView playBtn, previousBtn, nextBtn;
+
     RecyclerView songsRv;
     SongsRvAdapter adapter;
 
@@ -41,12 +50,18 @@ public class MainActivity extends AppCompatActivity {
     ConstraintLayout cBottomSheet;
     BottomSheetBehavior bottomSheetBehavior;
 
+    private MediaPlayerService player;
+    boolean serviceBound = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         songsRv = findViewById(R.id.songs_rv);
+        playBtn = findViewById(R.id.playBtn);
+        previousBtn = findViewById(R.id.previousBtn);
+        nextBtn = findViewById(R.id.nextBtn);
 
         cBottomSheet = findViewById(R.id.bottom_sheet);
         bottomSheetBehavior = BottomSheetBehavior.from(cBottomSheet);
@@ -120,7 +135,6 @@ public class MainActivity extends AppCompatActivity {
         adapter.setOnItemClickListener(new SongsRvAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-
 //                Intent intent = new Intent(MainActivity.this, PlaySongActivity.class);
 ////                Intent intent = new Intent(MainActivity.this, MediaPlayerService.class);
 //                Bundle bundle = new Bundle();
@@ -128,12 +142,16 @@ public class MainActivity extends AppCompatActivity {
 //                intent.putExtras(bundle);
 //                startActivity(intent);
 
+                playAudio(items.get(position).getData());
+
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                
-
-
-
-//                startService(intent);
+                playBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        playBtn.setImageResource(R.drawable.ic_play);
+                        Log.d(TAG, "onClick: here");
+                    }
+                });
 
 //                MediaPlayer player = new MediaPlayer();
 //                try {
@@ -173,4 +191,34 @@ public class MainActivity extends AppCompatActivity {
         return songCover;
     }
 
+
+    private ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            // We've bound to LocalService, cast the IBinder and get LocalService instance
+            MediaPlayerService.LocalBinder binder = (MediaPlayerService.LocalBinder) service;
+            player = binder.getService();
+            serviceBound = true;
+
+            Toast.makeText(MainActivity.this, "Service Bound", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            serviceBound = false;
+        }
+    };
+
+    private void playAudio(String media) {
+        //Check is service is active
+        if (!serviceBound) {
+            Intent playerIntent = new Intent(this, MediaPlayerService.class);
+            playerIntent.putExtra("media", media);
+            startService(playerIntent);
+            bindService(playerIntent, serviceConnection, Context.BIND_AUTO_CREATE);
+        } else {
+            //Service is active
+            //Send media with BroadcastReceiver
+        }
+    }
 }
